@@ -9,6 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -31,5 +34,19 @@ public class CryptozoologyServiceTest {
          assertEquals(animal,Fish);
          assertEquals(animal.hashCode(),Fish.hashCode());
 
+    }
+
+    @Test
+    public void cryptozoology_getAllAnimal(){
+        Animal animal = new Animal("Dog","walking");
+        Animal animal1= new Animal("Cat","walking");
+        Animal animal2= new Animal("Bird","flying");
+        List<Animal> animals = new ArrayList<>();
+        animals.add(animal);
+        animals.add(animal1);
+        animals.add(animal2);
+        when(cryptozoologyRepository.findAll())
+        .thenReturn(animals);
+        assertEquals(animals,cryptozoologyService.getallAnimals());
     }
 }

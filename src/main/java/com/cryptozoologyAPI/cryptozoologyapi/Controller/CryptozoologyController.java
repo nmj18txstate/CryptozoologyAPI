@@ -21,4 +21,10 @@ public class CryptozoologyController {
     public Animal addAnimal(@RequestBody Animal animal){
      return cryptozoologyService.addAnimal(animal);
     }
+
+    @GetMapping("/animal")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Animal> getallAnimals(){
+        return cryptozoologyService.getallAnimals();
+    }
 }
