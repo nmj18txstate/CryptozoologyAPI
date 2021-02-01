@@ -14,12 +14,18 @@ public class Animal {
 
     private String name;
     private String type;
-    public Animal(String name, String type) {
+    private String mood;
+
+    public Animal(String name, String type,String mood) {
         this.name = name;
         this.type = type;
+        this.mood = mood;
     }
 
     public Animal() {
+    }
+
+    public String getMood() {return mood;
     }
 
     public String getName() {
@@ -31,4 +37,8 @@ public class Animal {
     }
 
 
+    public void setMood(String mood)
+    {
+        this.mood = mood;
+    }
 }

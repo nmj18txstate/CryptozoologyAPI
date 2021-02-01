@@ -27,4 +27,11 @@ public class CryptozoologyController {
     public List<Animal> getallAnimals(){
         return cryptozoologyService.getallAnimals();
     }
+
+    @PutMapping("/animal/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Animal giveTreat(@PathVariable Long id,@RequestBody Animal animal ){
+        return cryptozoologyService.updateAnimal(id,animal);
+    }
+
 }

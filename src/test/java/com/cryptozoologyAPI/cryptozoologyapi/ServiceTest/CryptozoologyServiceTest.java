@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,10 +27,10 @@ public class CryptozoologyServiceTest {
 
     @Test
     public void cryptozoology_addAnimal(){
-       Animal animal =  new Animal("Fish","swimming");
+       Animal animal =  new Animal("Fish","swimming","Unhappy");
         when(cryptozoologyRepository.save(any()))
                 .thenReturn(animal);
-         Animal Fish = cryptozoologyService.addAnimal(new Animal("Fish","swimming"));
+         Animal Fish = cryptozoologyService.addAnimal(new Animal("Fish","swimming","Unhappy"));
          verify(cryptozoologyRepository,times(1)).save(any());
          assertEquals(animal,Fish);
          assertEquals(animal.hashCode(),Fish.hashCode());
@@ -38,9 +39,9 @@ public class CryptozoologyServiceTest {
 
     @Test
     public void cryptozoology_getAllAnimal(){
-        Animal animal = new Animal("Dog","walking");
-        Animal animal1= new Animal("Cat","walking");
-        Animal animal2= new Animal("Bird","flying");
+        Animal animal = new Animal("Dog","walking","Unhappy");
+        Animal animal1= new Animal("Cat","walking","Unhappy");
+        Animal animal2= new Animal("Bird","flying","Unhappy");
         List<Animal> animals = new ArrayList<>();
         animals.add(animal);
         animals.add(animal1);
@@ -48,5 +49,16 @@ public class CryptozoologyServiceTest {
         when(cryptozoologyRepository.findAll())
         .thenReturn(animals);
         assertEquals(animals,cryptozoologyService.getallAnimals());
+    }
+
+    @Test
+    public void cryptozoology_updateAnimalMood(){
+        Animal animal = new Animal("Dog","walking","Happy");
+        when(cryptozoologyRepository.save(any()))
+                .thenReturn(animal);
+        when(cryptozoologyRepository.findById(any()))
+                .thenReturn(Optional.of(new Animal("Dog", "walking", "Unhappy")));
+        assertEquals(animal,cryptozoologyService.updateAnimal(1L,animal));
+        verify(cryptozoologyRepository,times(1)).save(any());
     }
 }
