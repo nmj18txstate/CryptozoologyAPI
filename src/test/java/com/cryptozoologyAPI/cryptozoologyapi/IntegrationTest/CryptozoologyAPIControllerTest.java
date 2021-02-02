@@ -174,6 +174,7 @@ public class CryptozoologyAPIControllerTest {
         cryptozoologyRepository.save(animal2);
         cryptozoologyRepository.save(animal3);
 
+       // List<Animal> actualList = cryptozoologyRepository.findByMoodAndType("Unhappy","walking");
         List<Animal> expected = List.of(animal1, animal2);
 
         MvcResult mvcResult = mockMvc.perform(get("/zoo/animal-type-mood?mood=Unhappy&type=walking"))

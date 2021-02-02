@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CryptozoologyRepository extends JpaRepository<Animal,Long>{
-
+        List<Animal> findByMoodAndType(String mood, String Type);
 }

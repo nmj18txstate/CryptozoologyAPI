@@ -64,9 +64,11 @@ public class CryptozoologyService {
     }
 
     public List<Animal> getAnimalByTypeAndMood(String mood, String type) {
-        List<Animal> animalList = cryptozoologyRepository.findAll();
-        List<Animal> resultList = animalList.stream()
-                .filter(a->a.getMood().equals(mood)&&a.getType().equals(type)).collect(Collectors.toList());
-        return resultList;
+//        List<Animal> animalList = cryptozoologyRepository.findAll();
+//        List<Animal> resultList = animalList.stream()
+//                .filter(a->a.getMood().equals(mood)&&a.getType().equals(type)).collect(Collectors.toList());
+      //  return resultList;
+
+        return cryptozoologyRepository.findByMoodAndType(mood,type);
     }
 }

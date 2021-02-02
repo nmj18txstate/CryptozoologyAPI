@@ -112,8 +112,11 @@ public class CryptozoologyServiceTest {
         List<Animal> animalList = List.of(animal1, animal2, animal3);
         List<Animal> expected = List.of(animal1, animal2);
 
+
         when(cryptozoologyRepository.findAll()).thenReturn(animalList);
         assertEquals(expected, cryptozoologyService.getAnimalByTypeAndMood("Unhappy", "walking"));
         verify(cryptozoologyRepository, times(1)).findAll();
     }
+
+
 }
