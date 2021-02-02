@@ -1,7 +1,9 @@
 package com.cryptozoologyAPI.cryptozoologyapi.ServiceTest;
 
 import com.cryptozoologyAPI.cryptozoologyapi.Model.Animal;
+import com.cryptozoologyAPI.cryptozoologyapi.Model.Habitat;
 import com.cryptozoologyAPI.cryptozoologyapi.Repository.CryptozoologyRepository;
+import com.cryptozoologyAPI.cryptozoologyapi.Repository.HabitatRepository;
 import com.cryptozoologyAPI.cryptozoologyapi.Service.CryptozoologyService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +23,9 @@ import static org.mockito.Mockito.*;
 public class CryptozoologyServiceTest {
     @Mock
     private CryptozoologyRepository cryptozoologyRepository;
+
+    @Mock
+    private HabitatRepository habitatRepository;
 
     @InjectMocks
     private CryptozoologyService cryptozoologyService;
@@ -60,5 +65,55 @@ public class CryptozoologyServiceTest {
                 .thenReturn(Optional.of(new Animal("Dog", "walking", "Unhappy")));
         assertEquals(animal,cryptozoologyService.updateAnimal(1L,animal));
         verify(cryptozoologyRepository,times(1)).save(any());
+    }
+
+    @Test
+    public void habitat_returnsEmptyHabitat(){
+        Habitat habitat = new Habitat("nest", "flying");
+        when(habitatRepository.save(any())).thenReturn(habitat);
+        assertEquals(habitat, cryptozoologyService.createHabitat(habitat));
+        verify(habitatRepository, times(1)).save(any());
+    }
+
+    @Test
+    public void update_habitat_compatible() throws Exception {
+        Habitat habitat = new Habitat("nest", "flying");
+        Animal animal = new Animal("Bird","flying","UnHappy");
+        habitat.setAnimal(animal);
+        when(habitatRepository.save(any())).thenReturn(habitat);
+        when(cryptozoologyRepository.findById(any())).thenReturn(Optional.of(animal));
+        when(habitatRepository.findById(any())).thenReturn(Optional.of(habitat));
+        assertEquals(habitat, cryptozoologyService.updateHabitat(1L, 1L));
+        verify(habitatRepository,times(1)).save(any());
+
+    }
+
+    @Test
+    public void getHabitatById(){
+        Habitat habitat = new Habitat("nest", "flying");
+        when(habitatRepository.findById(any())).thenReturn(Optional.of(habitat));
+        assertEquals(habitat, cryptozoologyService.getHabitatById(1L));
+        verify(habitatRepository, times(1)).findById(any());
+    }
+
+    @Test
+    public void getAnimalById(){
+        Animal animal = new Animal("Bird","flying","UnHappy");
+        when(cryptozoologyRepository.findById(any())).thenReturn(Optional.of(animal));
+        assertEquals(animal, cryptozoologyService.getAnimalById(1L));
+        verify(cryptozoologyRepository, times(1)).findById(any());
+    }
+
+    @Test
+    public void getAnimalByTypeAndMood(){
+        Animal animal1 = new Animal("Dog","walking","Unhappy");
+        Animal animal2 =  new Animal("Cat","walking","Unhappy");
+        Animal animal3 = new Animal("Bird","flying","Unhappy");
+        List<Animal> animalList = List.of(animal1, animal2, animal3);
+        List<Animal> expected = List.of(animal1, animal2);
+
+        when(cryptozoologyRepository.findAll()).thenReturn(animalList);
+        assertEquals(expected, cryptozoologyService.getAnimalByTypeAndMood("Unhappy", "walking"));
+        verify(cryptozoologyRepository, times(1)).findAll();
     }
 }
